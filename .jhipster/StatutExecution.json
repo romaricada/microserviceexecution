@@ -1,0 +1,70 @@
+{
+    "name": "StatutExecution",
+    "fields": [
+        {
+            "fieldName": "motif",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "suspendu",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "reprise",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateSuspendu",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateReprise",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "contrat",
+            "otherEntityRelationshipName": "statutExecutions",
+            "relationshipName": "contrat",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200602172510",
+    "entityTableName": "statut_execution",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "microserviceexecution",
+    "applications": [
+        "microserviceexecution"
+    ],
+    "skipClient": true,
+    "microserviceName": "microserviceexecution"
+}

@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<entity-mappings ptype="MONOLITH" ppkg="mena.gov.bf.domain.newModel" epkg="domain" v="5.4.3" rws="_16150336903091" Pws="_16150336903091" cws="_16150336903091" persistenceUnitName="DEFAULT_PU" sm="false" xs="false" id="_16150334141725" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <entity compositePrimaryKeyClass="StatutExecutionPK" abs="false" class="StatutExecution" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_16150334149906">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="motif" jbt="false" id="_16150334153958">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="motif" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="suspendu" jbt="false" id="_16150334156149">
+                <xwm/>
+                <xm/>
+                <column name="suspendu" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="contratResilier" jbt="false" id="_161503341580710">
+                <xwm/>
+                <xm/>
+                <column name="contrat_resilier" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="reprise" jbt="false" id="_161503341596811">
+                <xwm/>
+                <xm/>
+                <column name="reprise" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="dateSuspendu" jbt="false" id="_161503341623512">
+                <xwm/>
+                <xm/>
+                <column name="date_suspendu" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="dateReprise" jbt="false" id="_161503341623513">
+                <xwm/>
+                <xm/>
+                <column name="date_reprise" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503341623614">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" connected-attribute-id="_161503342471996" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="contrat" jbt="false" id="_161503341643815">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_16150334150097">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="statut_execution"/>
+    </entity>
+    <entity compositePrimaryKeyClass="EtapeExecutionPK" abs="false" class="EtapeExecution" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503341666921">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="libelle" jbt="false" id="_161503341686923">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="libelle" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503341711624">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" connected-attribute-id="_1615033424722100" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="contrat" jbt="false" id="_161503341736425">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503341666922">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="etape_execution"/>
+    </entity>
+    <entity compositePrimaryKeyClass="AvenantPK" abs="false" class="Avenant" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503341736626">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="reference" jbt="false" id="_161503341760128">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="reference" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="motif" jbt="false" id="_161503341787729">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="motif" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Double" v="true" xvt="" am="PRIVATE" name="montant" jbt="false" id="_161503341812030">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="montant" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="temps" jbt="false" id="_161503341830931">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="temps" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="date" jbt="false" id="_161503341854532">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="date" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503341854533">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" connected-attribute-id="_161503342472199" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="contrat" jbt="false" id="_161503341874734">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_1615033425857108" connected-attribute-id="_1615033426541112" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="typeAvenant" jbt="false" id="_161503341874735">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503341736627">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="avenant"/>
+    </entity>
+    <entity compositePrimaryKeyClass="LiquidationPK" abs="false" class="Liquidation" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503341874936">
+        <attributes>
+            <basic attribute-type="Double" v="true" xvt="" am="PRIVATE" name="montant" jbt="false" id="_161503341893938">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="montant" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="date" jbt="false" id="_161503341915539">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="date" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Long" v="true" xvt="" am="PRIVATE" name="activiteId" jbt="false" id="_161503341915640">
+                <xwm/>
+                <xm/>
+                <column name="activite_id" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503341934141">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="support" id="_161504118371286">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="referencePaiement" id="_161504121311487">
+                <xwm/>
+                <xm/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" connected-attribute-id="_1615033424723101" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="contrat" jbt="false" id="_161503341951942">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342169666" v="true" xvt="" name="engagement" id="_161506706609559">
+                <xwm/>
+                <xm/>
+            </many-to-one>
+            <one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_161503342251776" v="true" xvt="" name="penalite" id="_161504160370692">
+                <xwm/>
+                <xm/>
+            </one-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503341874937">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <nq e="false" name="Liquidation.findBySupport">
+            <query>Select l from Liquidation l where l.support=:support</query>
+        </nq>
+        <nq e="false" name="Liquidation.findByReferencePaiement">
+            <query>Select l from Liquidation l where l.referencePaiement=:referencePaiement</query>
+        </nq>
+        <table name="liquidation"/>
+    </entity>
+    <entity compositePrimaryKeyClass="DecisionContentieuxPK" abs="false" class="DecisionContentieux" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503341952043">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="decision" jbt="false" id="_161503341971345">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="decision" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="date" jbt="false" id="_161503341988446">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="date" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="structure" jbt="false" id="_161503341988547">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="structure" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="referenceDecision" jbt="false" id="_161503342007248">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="reference_decision" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503342026049">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_161503342044851" connected-attribute-id="_161503342099456" v="true" xvt="" am="PRIVATE" name="contentieuxs" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_161503342044150">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503341952044">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="decision_contentieux"/>
+    </entity>
+    <entity compositePrimaryKeyClass="ContentieuxPK" abs="false" class="Contentieux" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503342044851">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="objet" jbt="false" id="_161503342063153">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="objet" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503342081254">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" connected-attribute-id="_161503342472098" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="contrat" jbt="false" id="_161503342099355">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503341952043" connected-attribute-id="_161503342044150" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="decisionContentieux" jbt="false" id="_161503342099456">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503342044852">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="contentieux"/>
+    </entity>
+    <entity compositePrimaryKeyClass="OrdreServicePK" abs="false" class="OrdreService" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503342099557">
+        <attributes>
+            <basic attribute-type="mena.gov.bf.domain.enumeration.TypeOs" v="true" xvt="" am="PRIVATE" name="type" jbt="false" id="_161503342117359">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="type" unique="false" nullable="false" insertable="true" updatable="true"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic attribute-type="mena.gov.bf.domain.enumeration.EtatOs" v="true" xvt="" am="PRIVATE" name="etat" jbt="false" id="_161503342118060">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="etat" unique="false" nullable="false" insertable="true" updatable="true"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="dateDebut" jbt="false" id="_161503342118161">
+                <xwm/>
+                <xm/>
+                <column name="date_debut" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="dateFin" id="_161503630622762">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="Integer" v="true" xvt="" am="PRIVATE" name="delai" jbt="false" id="_161503342118162">
+                <xwm/>
+                <xm/>
+                <column name="delai" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="libelle" jbt="false" id="_161503342135763">
+                <xwm/>
+                <xm/>
+                <column name="libelle" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503342152864">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" fetch="LAZY" v="true" xvt="" am="PRIVATE" name="contrat" jbt="false" id="_161503342169665">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503342099558">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <nq e="false" name="OrdreService.findByDateFin">
+            <query>Select o from OrdreService o where o.dateFin=:dateFin</query>
+        </nq>
+        <table name="ordre_service"/>
+    </entity>
+    <entity compositePrimaryKeyClass="EngagementPK" abs="false" class="Engagement" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503342169666">
+        <attributes>
+            <basic attribute-type="Double" v="true" xvt="" am="PRIVATE" name="montantEngage" jbt="false" id="_161503342181168">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="montant_engage" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="date" jbt="false" id="_161503342192569">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="date_engagement" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Long" v="true" xvt="" am="PRIVATE" name="lotId" jbt="false" id="_161503342215972">
+                <xwm/>
+                <xm/>
+                <column name="lot_id" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503342239675">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <transient attribute-type="mena.gov.bf.bean.ActiviteDTO" v="true" xvt="" am="PRIVATE" name="activite" jbt="false" id="_161503342239374">
+                <xwm/>
+                <xm/>
+            </transient>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503747640470" v="true" xvt="" name="ligneBudgetaireContrat" id="_161506677420253">
+                <xwm/>
+                <xm/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503342169767">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="engagement"/>
+    </entity>
+    <entity compositePrimaryKeyClass="PenalitePK" abs="false" class="Penalite" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503342251776">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="motifPenalite" jbt="false" id="_161503342276978">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="motif_penalite" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503342295679">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="montanPenalite" id="_161504154706288">
+                <xwm/>
+                <xm/>
+            </basic>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503342251777">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <nq e="false" name="Penalite.findByMontanPenalite">
+            <query>Select p from Penalite p where p.montanPenalite=:montanPenalite</query>
+        </nq>
+        <table name="penalite"/>
+    </entity>
+    <entity compositePrimaryKeyClass="ContratPK" abs="false" class="Contrat" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503342373087">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="reference" jbt="false" id="_161503342391189">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="reference" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="java.time.LocalDate" v="true" xvt="" am="PRIVATE" name="dateSignature" jbt="false" id="_161503342411190">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="date_signature" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="resilierContrat" jbt="false" id="_161503342411293">
+                <xwm/>
+                <xm/>
+                <column name="resilier_contrat" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Long" v="true" xvt="" am="PRIVATE" name="cautionCandidatLotId" jbt="false" id="_161503342432394">
+                <xwm/>
+                <xm/>
+                <column name="caution_candidat_lot_id" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_161503342452495">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_16150334149906" connected-attribute-id="_161503341643815" v="true" xvt="" am="PRIVATE" name="statutExecutions" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_161503342471996">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_161503342044851" connected-attribute-id="_161503342099355" v="true" xvt="" am="PRIVATE" name="contentieuxs" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_161503342472098">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_161503341736626" connected-attribute-id="_161503341874734" v="true" xvt="" am="PRIVATE" name="avenants" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_161503342472199">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_161503341666921" connected-attribute-id="_161503341736425" v="true" xvt="" am="PRIVATE" name="etapeExecutions" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_1615033424722100">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_161503341874936" connected-attribute-id="_161503341951942" v="true" xvt="" am="PRIVATE" name="liquidations" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_1615033424723101">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <one-to-many orp="false" collection-type="java.util.List" cit="java.util.ArrayList" connected-entity-id="_1616260342127232" connected-attribute-id="_1616260628867246" v="true" xvt="" name="contratLots" id="_1616260628867247">
+                <xwm/>
+                <xm/>
+            </one-to-many>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_161503342373088">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="contrat"/>
+    </entity>
+    <entity compositePrimaryKeyClass="TypeAvenantPK" abs="false" class="TypeAvenant" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_1615033425857108">
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" am="PRIVATE" name="libelle" jbt="false" id="_1615033426135110">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="libelle" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="Boolean" v="true" xvt="" am="PRIVATE" name="deleted" jbt="false" id="_1615033426347111">
+                <xwm/>
+                <xm/>
+                <bv>
+                    <nn/>
+                </bv>
+                <column name="deleted" unique="false" nullable="false" insertable="true" updatable="true"/>
+            </basic>
+            <one-to-many orp="false" own="false" collection-type="java.util.Set" connected-entity-id="_161503341736626" connected-attribute-id="_161503341874735" v="true" xvt="" am="PRIVATE" name="avenants" dv="[ java.util.Set , java.util.HashSet ] new HashSet&lt;&gt;()" jbt="false" id="_1615033426541112">
+                <xwm/>
+                <xm/>
+                <cascade/>
+            </one-to-many>
+            <id attribute-type="Long" v="true" xvt="" am="PRIVATE" name="id" jbt="false" id="_1615033425857109">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="SEQUENCE" generator="sequenceGenerator"/>
+                <sequence-generator name="sequenceGenerator"/>
+            </id>
+        </attributes>
+        <table name="type_avenant"/>
+    </entity>
+    <entity compositePrimaryKeyClass="OrdreCommandePK" abs="false" class="OrdreCommande" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503406651050">
+        <ath>nafolo</ath>
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" name="reference" id="_161503605419457">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="dateSignature" id="_161503613284058">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="dateDebutPrevu" id="_161503613402659">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="DateFinPrevu" id="_161503613448260">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="resilier" id="_161503617624061">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="deleted" id="_161506648087351">
+                <xwm/>
+                <xm/>
+            </basic>
+            <one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_161503342373087" v="true" xvt="" name="contrat" id="_161503603048056">
+                <xwm/>
+                <xm/>
+            </one-to-one>
+            <one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_161503341736626" v="true" xvt="" name="avenant" id="_161503651577264">
+                <xwm/>
+                <xm/>
+            </one-to-one>
+            <one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_161503660575565" v="true" xvt="" name="typeOrdreCommande" id="_161503673396369">
+                <xwm/>
+                <xm/>
+            </one-to-one>
+            <id attribute-type="Long" v="true" xvt="" name="id" id="_161503406671351">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="DEFAULT"/>
+            </id>
+        </attributes>
+        <nq e="false" name="OrdreCommande.findAll">
+            <query>Select e from OrdreCommande e</query>
+        </nq>
+        <nq e="false" name="OrdreCommande.findByReference">
+            <query>Select o from OrdreCommande o where o.reference=:reference</query>
+        </nq>
+        <nq e="false" name="OrdreCommande.findByDateSignature">
+            <query>Select o from OrdreCommande o where o.dateSignature=:dateSignature</query>
+        </nq>
+        <nq e="false" name="OrdreCommande.findByDateDebutPrevu">
+            <query>Select o from OrdreCommande o where o.dateDebutPrevu=:dateDebutPrevu</query>
+        </nq>
+        <nq e="false" name="OrdreCommande.findByDateFinPrevu">
+            <query>Select o from OrdreCommande o where o.DateFinPrevu=:DateFinPrevu</query>
+        </nq>
+        <nq e="false" name="OrdreCommande.findByResilier">
+            <query>Select o from OrdreCommande o where o.resilier=:resilier</query>
+        </nq>
+        <nq e="false" name="OrdreCommande.findByDeleted">
+            <query>Select o from OrdreCommande o where o.deleted=:deleted</query>
+        </nq>
+    </entity>
+    <entity compositePrimaryKeyClass="TypeOrdreCommandePK" abs="false" class="TypeOrdreCommande" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503660575565">
+        <ath>nafolo</ath>
+        <attributes>
+            <id attribute-type="Long" v="true" xvt="" name="id" id="_161503660578466">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="DEFAULT"/>
+            </id>
+        </attributes>
+        <nq e="false" name="TypeOrdreCommande.findAll">
+            <query>Select e from TypeOrdreCommande e</query>
+        </nq>
+    </entity>
+    <entity compositePrimaryKeyClass="LigneBudgetaireContratPK" abs="false" class="LigneBudgetaireContrat" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_161503747640470">
+        <ath>nafolo</ath>
+        <attributes>
+            <basic attribute-type="long" v="true" xvt="" name="ligneBudgetaireId" id="_161506612942546">
+                <xwm/>
+                <xm/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" v="true" xvt="" name="contrat" id="_161503752869174">
+                <xwm/>
+                <xm/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" name="id" id="_161503747643771">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="DEFAULT"/>
+            </id>
+        </attributes>
+        <nq e="false" name="LigneBudgetaireContrat.findAll">
+            <query>Select e from LigneBudgetaireContrat e</query>
+        </nq>
+        <nq e="false" name="LigneBudgetaireContrat.findByLigneBudgetaireId">
+            <query>Select l from LigneBudgetaireContrat l where l.ligneBudgetaireId=:ligneBudgetaireId</query>
+        </nq>
+    </entity>
+    <entity compositePrimaryKeyClass="ContratLotPK" abs="false" class="ContratLot" v="true" jbn="false" xre="false" m="false" rootElement="_16150334141725" id="_1616260342127232">
+        <ath>nafolo</ath>
+        <attributes>
+            <basic attribute-type="long" v="true" xvt="" name="lotId" id="_1616260460065241">
+                <xwm/>
+                <xm/>
+            </basic>
+            <many-to-one optional="true" primaryKey="false" connected-entity-id="_161503342373087" connected-attribute-id="_1616260628867247" v="true" xvt="" name="contrat" id="_1616260628867246">
+                <xwm/>
+                <xm/>
+            </many-to-one>
+            <id attribute-type="Long" v="true" xvt="" name="id" id="_1616260342172233">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="DEFAULT"/>
+            </id>
+        </attributes>
+        <nq e="false" name="ContratLot.findAll">
+            <query>Select e from ContratLot e</query>
+        </nq>
+        <nq e="false" name="ContratLot.findByLotId">
+            <query>Select c from ContratLot c where c.lotId=:lotId</query>
+        </nq>
+    </entity>
+    <entity compositePrimaryKeyClass="EtapePK" abs="false" class="Etape" pclass="Entity_1" v="true" xre="false" m="false" rootElement="_16150334141725" id="_162048398049947">
+        <ath>nafolo</ath>
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" name="Libelle" pname="attribute" id="_162048409539450">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="delai" pname="attribute1" id="_162048409741451">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="attribute2" pname="attribute2" id="_162048409807252">
+                <xwm/>
+                <xm/>
+            </basic>
+            <id attribute-type="Long" v="true" xvt="" name="id" id="_162048398055348">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="DEFAULT"/>
+            </id>
+        </attributes>
+        <nq e="false" name="Etape.findAll">
+            <query>Select e from Etape e</query>
+        </nq>
+        <nq e="false" name="Etape.findByLibelle">
+            <query>Select w from Etape w where w.Libelle=:Libelle</query>
+        </nq>
+        <nq e="false" name="Etape.findByDelai">
+            <query>Select w from Etape w where w.delai=:delai</query>
+        </nq>
+        <nq e="false" name="Etape.findByAttribute2">
+            <query>Select w from Etape w where w.attribute2=:attribute2</query>
+        </nq>
+    </entity>
+    <entity compositePrimaryKeyClass="ContratEtapePK" abs="false" class="ContratEtape" pclass="Entity_1" v="true" xre="false" m="false" rootElement="_16150334141725" id="_162048415438753">
+        <ath>nafolo</ath>
+        <attributes>
+            <basic attribute-type="String" v="true" xvt="" name="actif" pname="attribute" id="_162048457075456">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="date" pname="attribute1" id="_162048457156357">
+                <xwm/>
+                <xm/>
+            </basic>
+            <basic attribute-type="String" v="true" xvt="" name="valide" pname="attribute2" id="_162048457255658">
+                <xwm/>
+                <xm/>
+            </basic>
+            <many-to-one primaryKey="false" connected-entity-id="_162048398049947" v="true" name="etape" pname="wordFlowContrat" id="_162048473991760"/>
+            <many-to-one primaryKey="false" connected-entity-id="_161503342373087" v="true" name="contrat" id="_162048474793262"/>
+            <id attribute-type="Long" v="true" xvt="" name="id" id="_162048415442554">
+                <xwm/>
+                <xm/>
+                <generated-value strategy="DEFAULT"/>
+            </id>
+        </attributes>
+        <nq e="false" name="ContratEtape.findAll">
+            <query>Select e from ContratEtape e</query>
+        </nq>
+        <nq e="false" name="ContratEtape.findByActif">
+            <query>Select c from ContratEtape c where c.actif=:actif</query>
+        </nq>
+        <nq e="false" name="ContratEtape.findByDate">
+            <query>Select c from ContratEtape c where c.date=:date</query>
+        </nq>
+        <nq e="false" name="ContratEtape.findByValide">
+            <query>Select c from ContratEtape c where c.valide=:valide</query>
+        </nq>
+    </entity>
+    <c>
+        <ct>java.util.Set</ct>
+        <ct>java.util.List</ct>
+        <ct>java.util.Map</ct>
+        <ct>java.util.Collection</ct>
+        <cit>java.util.ArrayList</cit>
+        <cit>java.util.LinkedList</cit>
+        <cit>java.util.HashSet</cit>
+        <cit>java.util.TreeSet</cit>
+        <cit>java.util.HashMap</cit>
+    </c>
+    <wsl>
+        <ws n="Main" id="_16150336903091">
+            <i ref="_162048398049947" x="91" y="306"/>
+            <i ref="_16150334149906" x="970" y="331"/>
+            <i ref="_1615033425857108" x="343" y="876"/>
+            <i ref="_161503342251776" x="1193" y="895"/>
+            <i ref="_161503342169666" x="1289" y="445"/>
+            <i ref="_161503747640470" x="944" y="612"/>
+            <i ref="_161503341874936" x="944" y="856"/>
+            <i ref="_161503342373087" x="645" y="331"/>
+            <i ref="_161503342044851" x="32" y="561"/>
+            <i ref="_161503341736626" x="565" y="-50"/>
+            <i ref="_162048415438753" x="369" y="331"/>
+            <i ref="_1616260342127232" x="512" y="722"/>
+            <i ref="_161503342099557" x="260" y="32"/>
+            <i ref="_161503406651050" x="999" y="32"/>
+            <i ref="_161503341666921" x="607" y="889"/>
+            <i ref="_161503660575565" x="1330" y="125"/>
+            <i ref="_161503341952043" x="250" y="655"/>
+        </ws>
+    </wsl>
+</entity-mappings>

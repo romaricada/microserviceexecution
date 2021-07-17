@@ -1,0 +1,49 @@
+{
+    "name": "Contentieux",
+    "fields": [
+        {
+            "fieldName": "objet",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "contrat",
+            "otherEntityRelationshipName": "contentieuxs",
+            "relationshipName": "contrat",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "decisionContentieux",
+            "otherEntityRelationshipName": "contentieuxs",
+            "relationshipName": "decisionContentieux",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200602172512",
+    "entityTableName": "contentieux",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "microserviceexecution",
+    "applications": [
+        "microserviceexecution"
+    ],
+    "skipClient": true,
+    "microserviceName": "microserviceexecution"
+}

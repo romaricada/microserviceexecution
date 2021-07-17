@@ -1,0 +1,41 @@
+{
+    "name": "TypeAvenant",
+    "fields": [
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "avenant",
+            "otherEntityRelationshipName": "typeAvenant",
+            "relationshipName": "avenants"
+        }
+    ],
+    "changelogDate": "20200602172516",
+    "entityTableName": "type_avenant",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "microserviceexecution",
+    "applications": [
+        "microserviceexecution"
+    ],
+    "skipClient": true,
+    "microserviceName": "microserviceexecution"
+}

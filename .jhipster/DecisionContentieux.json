@@ -1,0 +1,62 @@
+{
+    "name": "DecisionContentieux",
+    "fields": [
+        {
+            "fieldName": "decision",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "structure",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "referenceDecision",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "contentieux",
+            "otherEntityRelationshipName": "decisionContentieux",
+            "relationshipName": "contentieuxs"
+        }
+    ],
+    "changelogDate": "20200602172517",
+    "entityTableName": "decision_contentieux",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "microserviceexecution",
+    "applications": [
+        "microserviceexecution"
+    ],
+    "skipClient": true,
+    "microserviceName": "microserviceexecution"
+}

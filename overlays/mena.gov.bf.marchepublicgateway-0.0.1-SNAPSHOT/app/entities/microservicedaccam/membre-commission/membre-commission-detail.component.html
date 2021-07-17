@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="membreCommission">
+            <h2><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.detail.title">Membre Commission</span> {{membreCommission.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.activiteId">Activite Id</span></dt>
+                <dd>
+                    <span>{{membreCommission.activiteId}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.referenceArrete">Reference Arrete</span></dt>
+                <dd>
+                    <span>{{membreCommission.referenceArrete}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.poste">Poste</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'marchepublicgatewayApp.Poste.' + membreCommission.poste}}">{{membreCommission.poste}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.deleted">Deleted</span></dt>
+                <dd>
+                    <span>{{membreCommission.deleted}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.membre">Membre</span></dt>
+                <dd>
+                    <div *ngIf="membreCommission.membre">
+                        <a [routerLink]="['/membre', membreCommission.membre?.id, 'view']">{{membreCommission.membre?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.typeCommission">Type Commission</span></dt>
+                <dd>
+                    <div *ngIf="membreCommission.typeCommission">
+                        <a [routerLink]="['/type-commission', membreCommission.typeCommission?.id, 'view']">{{membreCommission.typeCommission?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.tache">Tache</span></dt>
+                <dd>
+                    <div *ngIf="membreCommission.tache">
+                        <a [routerLink]="['/tache', membreCommission.tache?.id, 'view']">{{membreCommission.tache?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/membre-commission', membreCommission.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

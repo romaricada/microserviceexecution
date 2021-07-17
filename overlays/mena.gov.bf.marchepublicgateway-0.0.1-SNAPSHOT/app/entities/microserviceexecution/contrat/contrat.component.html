@@ -1,0 +1,1847 @@
+<div class="text-center">
+    <label class="font-weight-bold text-primary">GESTION DES CONTRATS</label>
+</div>
+<p-toolbar>
+    <div class="ui-toolbar-group-left">
+        <div class="ui-g ui-g-12 ui-g-nopad">
+            <div class="ui-g ui-g-12 ui-g-nopad">
+                <div class="ui-inputgroup mr-1">
+                    <span class="ui-inputgroup-addon"><span class="font-weight-bold">Exercice</span></span>
+                    <p-dropdown [options]="exercices" [(ngModel)]="exercice" placeholder="Selectionner un exercice"
+                                [style]="{'width': '250px'}" filter="filter"
+                                showClear="showClear" optionLabel="annee" (onChange)="loadExercicice()"
+                                required></p-dropdown>
+                </div>
+                <div class="ui-inputgroup mr-1">
+                    <span class="ui-inputgroup-addon"><span class="font-weight-bold">Activité</span></span>
+                    <p-dropdown [options]="activites" [(ngModel)]="activite"
+                                placeholder="Selectionner une activitée" [style]="{'width': '320px'}"
+                                filter="filter"
+                                showClear="showClear" optionLabel="nomActivite" [disabled]="exercice===null"
+                                (onChange)="loadActivite()" required></p-dropdown>
+                </div>
+                <div class="ui-inputgroup mr-1">
+                    <span class="ui-inputgroup-addon"><span class="font-weight-bold">Lot</span></span>
+                    <p-dropdown [options]="lots" [(ngModel)]="lot"
+                                placeholder="Selectionner un lot" [style]="{'width': '320px'}"
+                                filter="filter"
+                                showClear="showClear" optionLabel="libelle" [disabled]="activite===null"
+                                (onChange)="loadAttributaireByLot()" required></p-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-toolbar-group-left float-right">
+        <button type="button" pButton class="ui-button-secondary text-primary"
+                icon="fa fa-plus" label="Ajouter un contrat" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ADD'" [disabled]="activite===null"
+                (click)="associerLotAContrat()">
+        </button>
+        <!--<button type="button" pButton class="ui-button-secondary text-danger"
+                [disabled]="contratselected?.id!==undefined"
+                icon="fa fa-times" label="Supprimer des contrats" (click)="supprimer()">
+        </button>-->
+    </div>
+</p-toolbar>
+<br>
+<p-tabView (onChange)="tabViewChange($event)">
+    <br>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <div *ngIf="contrat==null">
+                        <span
+                            class="font-weight-bold">Attributaire du lot : {{candidatLot?.candidat?.nomStructure}}</span>
+                    </div>
+                    <div *ngIf="contrat!==null">
+                        <span
+                            class="font-weight-bold">Contrat de l'entreprise : {{candidatLot?.candidat?.nomStructure}}</span>
+                    </div>
+                    <div *ngIf="ordreservice!==null">
+                        <!--<span  class="font-weight-bold">
+                        <div class="card-body">
+                            <p-table [value]="contrats" [paginator]="true" [rows]="20" [responsive]="true"
+                                     [globalFilterFields]="['reference','dateSignature','DateDebutPrevu','DateFinPrevu']">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th>Contrat</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-contrat let-columns="columns">
+                                    <tr>
+                                        <td>{{contrat?.reference}}</td>
+                                        <td>
+                                            <button type="button" pButton class="ui-button-secondary text-warning"
+                                                    (click)="getFilesContentieux(contentieu)"
+                                                    icon="fa fa-paperclip"></button>
+                                            <button type="button" pButton label="Modifier"
+                                                    class="ui-button-secondary text-warning"
+                                                    (click)="addContentieux(contentieu)"
+                                                    icon="fa fa-edit"></button>
+                                            <button type="button" pButton label="Supprimer"
+                                                    class="ui-button-secondary text-danger"
+                                                    (click)="supprimercontentieu(contentieu)" icon="fa fa-trash"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                            </span>-->
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm">
+                            <span><span class="font-weight-bold">Reférence :</span>
+                                <span *ngIf="modif">
+                                    <input type="text" pInputText name="ref"
+                                           [(ngModel)]="contrat.reference"/>
+                                </span>
+                                <span *ngIf="!modif">
+                                    {{contrat?.reference}}
+                                </span>
+                            </span>
+                    </div>
+
+                    <div class="col-sm">
+                                        <span>
+                                            <span class="font-weight-bold">Date d’approbation :</span>
+                                                 <span *ngIf="modif">
+                                            <input id="field_datesignature" type="date" class="form-control"
+                                                   name="dateSignature"
+                                                   [(ngModel)]="contrat.dateSignature" required/>
+                                     </span>
+                                 <span *ngIf="!modif">
+                                    {{contrat?.dateSignature| date:'mediumDate'}}
+                                </span>
+                            </span>
+                    </div>
+                    <div class="col-sm">
+                                        <span>
+                                            <span class="font-weight-bold">Date debut prévu :</span>
+                                                 <span *ngIf="modif">
+                                            <input id="field_debut_prevu" type="date" class="form-control"
+                                                   name="debut_prevu"
+                                                   [(ngModel)]="contrat.dateDebutPrevu" required/>
+                                     </span>
+                                 <span *ngIf="!modif">
+                                    {{contrat?.dateDebutPrevu | date:'mediumDate'}}
+                                </span>
+                            </span>
+                    </div>
+
+                    <div class="col-sm">
+                                        <span>
+                                            <span class="font-weight-bold">Date fin prévu :</span>
+                                                 <span *ngIf="modif">
+                                            <input id="field_fin_prevu" type="date" class="form-control"
+                                                   name="fin_prevu"
+                                                   [(ngModel)]="contrat.dateFinPrevu" required/>
+                                     </span>
+                                 <span *ngIf="!modif">
+                                    {{contrat?.dateFinPrevu | date:'mediumDate'}}
+                                </span>
+                            </span>
+                    </div>
+                </div>
+                <br>
+                <div class="col-sm-8" *ngIf="modif">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileDataContrat($event)" [disabled]="lot===null">
+                    <ul>
+                        <li *ngFor="let file of fichiers">
+                            <span class="mt-2">{{file?.name}}</span>
+                            <span class="mt-2">{{file?.size}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <div class="text-left mb-2">
+                        <button type="button" pButton label="Enregistrer" class="ui-button-secondary text-primary"
+                                [disabled]="isSaving "
+                                icon="fa fa-done" (click)="saveContrat()">
+                        </button>
+                        <button type="button" pButton label="Modifier" (click)="addContrat(contrat)"
+                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_EDIT'"
+                                class="ui-button-secondary text-warning"
+                                [disabled]="lot===null || contrat?.id===undefined || contrat===null"
+                                icon="fa fa-edit">
+                        </button>
+                        <button type="button" pButton label="Supprimer" class="ui-button-secondary text-danger"
+                                (click)="supprimerContrat(contrat)"
+                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_DELETE'"
+                                [disabled]="lot===null || contrat?.id===undefined || contrat===null"
+                                icon="fa fa-trash">
+                        </button>
+                       <!-- <button type="button" pButton icon="fa fa-tasks" class="ui-button-secondary text-info"
+                                [disabled]="lot===null || contrat?.id===undefined || contrat===null"
+                                label="Tâche" pTooltip="Tâche" tooltipPosition="right"
+                                [routerLink]="['/create-tache', {id1:activite?.id,id2:lot?.id,id3:contrat?.id}]">
+                        </button>-->
+                        <button (click)="addResiliation(statusExecution)" class="ui-button-secondary text-danger"
+                                icon="pi pi-check" label="Résilier" pButton
+                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_RESILIER'"
+                                pTooltip="Résilier" tooltipPosition="top"
+                                [disabled]="lot===null || contrat?.id===undefined || contrat===null">
+                        </button>
+                        <button type="button" pButton class="ui-button-secondary text-warning"
+                                (click)="getFilesContrat(contrat)" [disabled]="lot===null"
+                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_FILE'"
+                                icon="fa fa-paperclip"></button>&nbsp;&nbsp;&nbsp;
+                        <div>
+                             <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>&nbsp;En chargement....
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <p-tabPanel header="Information" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_INFORMATION'" leftIcon="pi pi-calendar" [disabled]="activite===null">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-danger">Penalité
+               <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_INFORMATION_ADD'"
+                        type="button" class="ui-button-secondary text-primary" (click)="addPenalite(null)" [disabled]="activite===null">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter une pénalité
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <p-table [value]="penalites" [paginator]="true" [rows]="20" [responsive]="true"
+                                 [globalFilterFields]="['motifPenalite','contrat']" dataKey="id">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th>Motif de la pénélité</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-penalite let-columns="columns">
+                                <tr>
+                                    <td>{{penalite?.motifPenalite}}</td>
+                                    <td>
+                                        <button type="button" pButton class="ui-button-secondary text-warning"
+                                                (click)="getFilesPenalite(penalite)"
+                                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_INFORMATION_FILE'"
+                                                icon="fa fa-paperclip"></button>
+                                        <button type="button" pButton label="Modifier"
+                                                class="ui-button-secondary text-warning"
+                                                (click)="addPenalite(penalite)"
+                                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_INFORMATION_EDIT'"
+                                                icon="fa fa-edit"></button>
+                                        <button type="button" pButton label="Supprimer"
+                                                class="ui-button-secondary text-danger"
+                                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_INFORMATION_DELETE'"
+                                                (click)="supprimerPenalite(penalite)" icon="fa fa-trash"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Caution" leftIcon="pi pi-list" rightIcon="pi pi-star" [disabled]="activite===null" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CAUTION'">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-warning">Caution du candidat
+                <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CAUTION_ADD'"
+                        type="button" (click)="addCaution(null)" class="ui-button-secondary text-primary">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter une caution
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                    <p-table [value]="cautionCandidatLots" [paginator]="true" [rows]="20" [responsive]="true"
+                             [globalFilterFields]="['description','institutionFinanciere','montant','validationCandidat']"
+                             dataKey="id">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th>Description</th>
+                                <th>Institution financiaire</th>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>Validite</th>
+                                <th style="width: 21em">Actions</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-cautionCandidatLot let-columns="columns">
+                            <tr>
+                                <td [innerHTML]="cautionCandidatLot?.description"></td>
+                                <td>{{cautionCandidatLot?.institutionFinanciere}}</td>
+                                <td>{{cautionCandidatLot?.montantCandidat}}</td>
+                                <td>{{cautionCandidatLot?.dateDebut}}</td>
+                                <td>{{cautionCandidatLot?.validationCandidat}}</td>
+                                <td>
+                                    <button type="button" pButton class="ui-button-secondary text-warning"
+                                            (click)="getFilesCandidatCautionLot(cautionCandidatLot)"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CAUTION_FILE'"
+                                            icon="fa fa-paperclip"></button>
+                                    <button type="button" pButton label="Modifier"
+                                            class="ui-button-secondary text-warning"
+                                            (click)="addCaution(cautionCandidatLot)"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CAUTION_EDIT'"
+                                            icon="fa fa-edit"></button>
+                                    <button type="button" pButton label="Supprimer"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CAUTION_DELETE'"
+                                            class="ui-button-secondary text-danger"
+                                            (click)="supprimerCaution(cautionCandidatLot)"
+                                            icon="fa fa-trash"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Ordre de service" leftIcon="pi pi-list" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ORDRE_DE_SERVICE'" rightIcon="pi pi-star" [disabled]="activite===null">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-danger">Ordre de service
+               <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        type="button" class="ui-button-secondary text-primary" (click)="addOrdreService(null)" [disabled]="activite===null" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ORDRE_DE_SERVICE_ADD'">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter un ordre de service
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <p-table [value]="ordreservices" [paginator]="true" [rows]="20" [responsive]="true"
+                                 [globalFilterFields]="['libelle','etat','type','delai']" dataKey="id">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th>libellé</th>
+                                    <th>état</th>
+                                    <th>type</th>
+                                    <th>délai</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-ordreservice let-columns="columns">
+                                <tr>
+                                    <td>{{ordreservice?.libelle}}</td>
+                                    <td>{{ordreservice?.etat}}</td>
+                                    <td>{{ordreservice?.type}}</td>
+                                    <td>{{ordreservice?.delai}}</td>
+                                    <td>
+                                        <button type="button" pButton class="ui-button-secondary text-warning"
+                                                (click)="getFilesOrdre(ordreservice)"
+                                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ORDRE_DE_SERVICE_FILE'"
+                                                icon="fa fa-paperclip"></button>
+                                        <button type="button" pButton label="Modifier"
+                                                class="ui-button-secondary text-warning"
+                                                (click)="addOrdreService(ordreservice)"
+                                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ORDRE_DE_SERVICE_EDIT'"
+                                                icon="fa fa-edit"></button>
+                                        <button type="button" pButton label="Supprimer"
+                                                class="ui-button-secondary text-danger"
+                                                *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ORDRE_DE_SERVICE_DELETE'"
+                                                (click)="supprimerOrdre(ordreservice)" icon="fa fa-trash"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Engagement" leftIcon="pi pi-inbox" [disabled]="activite===null" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ENGAGEMENT'">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-dark">Engagement
+                <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ENGAGEMENT_ADD'"
+                        type="button" (click)="add(null)" class="ui-button-secondary text-primary">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter un engagement
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                        <p-table #dataTableEn [value]="engagements" dataKey="id">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Contrat</th>
+                                    <th>Lot</th>
+                                    <th>Montant engagé</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-engagement let-expanded="expanded" let-columns="columns">
+                                <tr>
+                                    <td>
+                                        <a [pRowToggler]="engagement">
+                                            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                                            <span>{{engagement.contratEn?.reference}}</span>
+                                        </a>
+                                    </td>
+                                    <td>{{engagement.lotEn?.libelle}}</td>
+                                    <td>{{engagement.montantEngage}}</td>
+                                    <td>{{engagement.date}}</td>
+                                    <td>
+                                        <button type="button" class="ui-button-secondary text-warning" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ENGAGEMENT_EDIT'" pButton icon="fa fa-edit" label="Modifier" (click)="modifEn(engagement)"></button>
+                                        <button type="button" class="ui-button-secondary text-danger" pButton icon="fa fa-remove" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_ENGAGEMENT_DELETE'" label="Supprimer" (click)="sup(engagement)"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                           <ng-template pTemplate="rowexpansion" let-engagement2 let-rowIndex="rowIndex">
+                                <tr>
+                                    <th colspan="2">Ligne crédit</th>
+                                    <th style="width: 12em" colspan="2">Montant engagé</th>
+                                    <th >Budget</th>
+                                </tr>
+                                <tr *ngFor="let ligneEngage of engagement2.engagementLigneBudgetaires">
+                                    <td colspan="2">{{ligneEngage?.ligneBudgetaires[0]?.ligneCredit}}</td>
+                                    <td colspan="2" >{{ligneEngage.montantEngageLigne}}</td>
+                                    <td>{{ligneEngage.ligneBudgetaires[0].budget}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+    </p-tabPanel>
+    <p-tabPanel header="Liquidation" leftIcon="pi pi-list" rightIcon="pi pi-star" [disabled]="activite===null" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_LIQUIDATION'">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-black-50">Liquidation
+                <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_LIQUIDATION_ADD'"
+                        type="button" (click)="addLiquidation(null)" class="ui-button-secondary text-primary">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter une liquidation
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                    <p-table [value]="liquidations" [paginator]="true" [rows]="20" [responsive]="true"
+                             [globalFilterFields]="['reference','dateSignature','DateDebutPrevu','DateFinPrevu']">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-liquidation let-columns="columns">
+                            <tr>
+                                <td>{{liquidation?.montant}}</td>
+                                <td>{{liquidation?.date | date:'mediumDate'}}</td>
+                                <td>
+                                    <button type="button" pButton class="ui-button-secondary text-warning"
+                                            (click)="getFilesLiquidation(liquidation)"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_LIQUIDATION_FILE'"
+                                            icon="fa fa-paperclip"></button>
+                                    <button type="button" pButton label="Modifier"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_LIQUIDATION_EDIT'"
+                                            class="ui-button-secondary text-warning"
+                                            (click)="addLiquidation(liquidation)"
+                                            icon="fa fa-edit"></button>
+                                    <button type="button" pButton label="Supprimer"
+                                            class="ui-button-secondary text-danger"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_LIQUIDATION_DELETE'"
+                                            (click)="supprimerLiquidation(liquidation)" icon="fa fa-trash"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Avenant" leftIcon="pi pi-list" rightIcon="pi pi-star" [disabled]="activite===null" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_AVENANT'">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-primary">Avenant
+                <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_AVENANT_ADD'"
+                        type="button" (click)="addAvenant(null)" class="ui-button-secondary text-primary">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter un Avenant
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                    <p-table [value]="avenants" [paginator]="true" [rows]="20" [responsive]="true"
+                             [globalFilterFields]="['reference','dateSignature','DateDebutPrevu','DateFinPrevu']">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th>Reférence</th>
+                                <th>Motif</th>
+                                <th>Montant</th>
+                                <th>Temps</th>
+                                <th>Date</th>
+                                <th style="width:20em">Actions</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-avenant let-columns="columns">
+                            <tr>
+                                <td>{{avenant?.reference}}</td>
+                                <td>{{avenant?.motif}}</td>
+                                <td>{{avenant?.montant}}</td>
+                                <td>{{avenant?.temps}}</td>
+                                <td>{{avenant?.date | date:'mediumDate'}}</td>
+                                <td>
+                                    <button type="button" pButton class="ui-button-secondary text-warning"
+                                            (click)="getFilesAvenant(avenant)" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_AVENANT_FILE'"
+                                            icon="fa fa-paperclip"></button>
+                                    <button type="button" pButton label="Modifier"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_AVENANT_EDIT'"
+                                            class="ui-button-secondary text-warning" (click)="addAvenant(avenant)"
+                                            icon="fa fa-edit"></button>
+                                    <button type="button" pButton label="Supprimer"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_AVENANT_DELETE'"
+                                            class="ui-button-secondary text-danger"
+                                            (click)="supprimerAvenant(avenant)" icon="fa fa-trash"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Contentieux" leftIcon="pi pi-list" rightIcon="pi pi-star" [disabled]="activite===null" *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CONTENTIEUX'">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+               <span class="font-weight-bold text-success">Contentieux
+                <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CONTENTIEUX_ADD'"
+                        type="button" (click)="addContentieux(null)" class="ui-button-secondary text-primary">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter un contentieux
+                            </button>
+               </span>
+               </span>
+                </div>
+                <div class="card-body">
+                    <p-table [value]="contentieux" [paginator]="true" [rows]="20" [responsive]="true"
+                             [globalFilterFields]="['reference','dateSignature','DateDebutPrevu','DateFinPrevu']">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th>Objet du contentieux</th>
+                                <th>Actions</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-contentieu let-columns="columns">
+                            <tr>
+                                <td>{{contentieu?.objet}}</td>
+                                <td>
+                                    <button type="button" pButton class="ui-button-secondary text-warning"
+                                            (click)="getFilesContentieux(contentieu)"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CONTENTIEUX_FILE'"
+                                            icon="fa fa-paperclip"></button>
+                                    <button type="button" pButton label="Modifier"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CONTENTIEUX_EDIT'"
+                                            class="ui-button-secondary text-warning"
+                                            (click)="addContentieux(contentieu)"
+                                            icon="fa fa-edit"></button>
+                                    <button type="button" pButton label="Supprimer"
+                                            class="ui-button-secondary text-danger"
+                                            *jhiHasAnyAuthority="'ROLE_EXECUTION_GESTION_DES_CONTRATS_CONTENTIEUX_DELETE'"
+                                            (click)="supprimercontentieu(contentieu)" icon="fa fa-trash"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+
+
+
+
+
+</p-tabView>
+
+
+<!------------------------------------------>
+<!-- creation et modification de penalite -->
+<!------------------------------------------>
+<p-dialog header="Création/Modification d'une pénalité" [(visible)]="displayPenalite" [modal]="true" [responsive]="true"
+          (onHide)="annulerPenalite()"
+          [style]="{width: '35%', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate (ngSubmit)="savePenalite()" #editForm="ngForm">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_motif_penalite">Motif</label>
+                    <input id="field_motif_penalite" type="text" class="form-control" name="reference"
+                           [(ngModel)]="penalite.motifPenalite" required="">
+                </div>
+            </div>
+        </div>
+    </form>
+    <fieldset>
+        <legend>Joindre des ficichiers</legend>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Fichiers à joindre</label>
+                <input type="file" name="filepenalite" class="form-control" multiple
+                       (change)="setFileDataPenalite($event)">
+                <ul>
+                    <li *ngFor="let file of fichiers">
+                        <span class="mt-2">{{file?.name}}</span>
+                        <span class="mt-2">{{file?.size}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </fieldset>
+    <div class="float-left"> <span *ngIf="isSaving">
+                <img src="../../../../content/images/ajax-loader.gif"/>
+              </span>
+    </div>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerPenalite()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer"
+                [disabled]="isSaving"
+                (click)='savePenalite()' class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- creation et modification engagement -->
+<!------------------------------------------------------->
+<p-dialog header="Création/Modification un engagement" [(visible)]="displayEn" [modal]="true" [responsive]="true" (onHide)="annulerEn()"
+          [style]="{width: '60%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate #editForm="ngForm">
+        <div class="row">
+            <!--div class="col-sm-4">
+                <div class="form-group">
+                    <label class="form-control-label">Activité</label>
+                    <select class="form-control" id="field_activite" name="activite" [(ngModel)]="activite" (click)="exerciceLoad()">
+                        <option [ngValue]="null">...</option>
+                        <option [ngValue]="activiteOption" *ngFor="let activiteOption of activites">{{activiteOption.nomActivite}}</option>
+                    </select>
+                </div>
+            </div-->
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label">Lot</label>
+                    <select class="form-control" id="field_lot" name="lot" [(ngModel)]="lot.id" (click)="loadActivite()" required>
+                        <option [ngValue]="null">...</option>
+                        <option [ngValue]="lotOption.id" *ngFor="let lotOption of lots">{{lotOption.libelle}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date de l'engagement</label>
+                    <input id="field_dateEn" type="date" class="form-control" name="date"
+                           [(ngModel)]="engagement.date" required>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="display1 === true">
+            <div class="tabAjout">
+                <p-table [value]="besoinLigneBudgetaires">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Ligne budgetaire</th>
+                            <th>Montant à engager</th>
+                            <th>Dotation corrigée</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-besoinLigneBudgetaire let-i="index">
+                        <tr>
+                            <td>{{besoinLigneBudgetaire.ligneBudget.ligneCredit}}</td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="number" name={{(i+3)*2}} id={{(i+3)*4}} min="0" [(ngModel)]="besoinLigneBudgetaire.ligneBudget.montantEstime" (change)="total(besoinLigneBudgetaire.ligneBudget.montantEstime, besoinLigneBudgetaire.ligneBudget)" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <span *ngIf="besoinLigneBudgetaire.ligneBudget.montantEstime !== undefined" >{{besoinLigneBudgetaire.ligneBudget.montantEstime}}</span>
+                                        <span *ngIf="besoinLigneBudgetaire.ligneBudget.montantEstime === null">Cliquez...</span>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td *ngIf="besoinLigneBudgetaire.aecp === true">{{besoinLigneBudgetaire.dotCorAE}}</td>
+                            <td *ngIf="besoinLigneBudgetaire.aecp === false">{{besoinLigneBudgetaire.dotCorCP}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td>Total</td>
+                            <td>{{contMontant}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+        <div *ngIf="display1 === false">
+            <p-table [value]="engagementLigneBudgetaires">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Ligne budgetaire</th>
+                        <th>Montant à engager</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-eng let-i="index">
+                    <tr>
+                        <td>{{eng.ligneBudgetaires[0]?.ligneCredit}}</td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="number" name={{(i+3)}} id={{(i+3)}} min="0" [(ngModel)]="eng.montantEngageLigne" (change)="totalModif(eng.montantEngageLigne, eng)" required>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <span *ngIf="eng.montantEngageLigne !== undefined" >{{eng.montantEngageLigne}}</span>
+                                    <span *ngIf="eng.montantEngageLigne === null">0</span>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td>Total</td>
+                        <td>{{contMontant}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <!--div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-control-label" for="field_date">Date de l'engagement</label>
+                <input id="field_date" type="date" class="form-control" name="date"
+                       [(ngModel)]="engagement.date" required>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="form-control-label" for="field_montant">Montant engagé</label>
+                <input id="field_montant" type="number" class="form-control" name="montant"
+                       [(ngModel)]="engagement.montantEngage" required>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="form-control-label">Ligne budgetaire</label>
+                <select class="form-control" id="field_ligne" name="libelle" [(ngModel)]="ligneBudgetaire">
+                    <option [ngValue]="null">...</option>
+                    <option [ngValue]="ligneOption" *ngFor="let ligneOption of ligneBudgetaires">{{ligneOption.ligneCredit}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="form-control-label">Lot</label>
+                <select class="form-control" id="field_lot" name="libelle" [(ngModel)]="lot">
+                    <option [ngValue]="null">...</option>
+                    <option [ngValue]="lotOption" *ngFor="let lotOption of lots">{{lotOption.libelle}}</option>
+                </select>
+            </div>
+        </div>
+    </div-->
+    </form>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger" label="Annuler" (click)='annulerEn()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer" (click)='saveEn()' class="ui-button-secondary text-info"></button>
+    </div>
+</p-dialog>
+<!------------------------------------------------------>
+<!-- creation et modification de contentieux -->
+<!------------------------------------------------------->
+
+<p-dialog header="Création/Modification d'un contentieux " [(visible)]="displaycontentieux" [modal]="true"
+          [responsive]="true"
+          (onHide)="annulerContentieu()"
+          [style]="{width: '40%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+
+    <form name="editForm" role="form" novalidate (ngSubmit)="saveContentieu()" #editForm="ngForm">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_objet">Objet</label>
+                    <input id="field_objet" type="text" class="form-control" name="motif"
+                           [(ngModel)]="contentieu.objet" required>
+                </div>
+            </div>
+        </div>
+    </form>
+    <fieldset>
+        <legend>Joindre des ficichiers</legend>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Fichiers à joindre</label>
+                <input type="file" name="fileContentieux" class="form-control" multiple
+                       (change)="setFileDataContentieux($event)">
+                <ul>
+                    <li *ngFor="let file of fichiers">
+                        <span class="mt-2">{{file?.name}}</span>
+                        <span class="mt-2">{{file?.size}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </fieldset>
+    <div class="float-left"> <span *ngIf="isSaving">
+                <img src="../../../../content/images/ajax-loader.gif"/>
+              </span>
+    </div>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerContentieu()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer" [disabled]="isSaving"
+                (click)='saveContentieu()' class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- creation et modification d'un avenant -->
+<!------------------------------------------------------->
+
+<p-dialog header="Création/Modification d'un avenant" [(visible)]="displaysavenant" [modal]="true"
+          [responsive]="true"
+          (onHide)="annulerAvenant()"
+          [style]="{width: '40%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate #editFormAvenant="ngForm">
+        <div class="row">
+            <div class="col-sm-6" *ngIf="!ajouterTypeAvenant">
+                <div class="form-group">
+                    <label class="form-control-label">Type de avenant</label>
+                    <div class="input-group">
+                        <select class="form-control" id="typeAvenant" name="typeAvenant"
+                                [(ngModel)]="avenant.typeAvenantId" required>
+                            <option selected *ngFor="let typeAvenant of typeAvenants"
+                                    [ngValue]="typeAvenant.id">{{typeAvenant.libelle}}</option>
+                        </select>
+                        <span class="input-group-append">
+                            <button
+                                type="button" (click)="selectTypeAvenant()" class="btn btn-primary btn-sm">
+                                <fa-icon [icon]="'plus'"></fa-icon>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" *ngIf="ajouterTypeAvenant">
+                <div class="form-group">
+                    <label class="form-control-label">Type de avenant</label>
+                    <div class="input-group">
+                        <input id="field_typeAvenant" type="text" class="form-control" name="field_typeAvenant"
+                               [(ngModel)]="avenant.typeAvenant.libelle" required>
+                        <span class="input-group-append">
+                            <button
+                                type="button" class="btn btn-primary btn-sm" (click)="selectTypeAvenant()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_referenc">Reférence</label>
+                    <input id="field_referenc" type="text" class="form-control" name="reference"
+                           [(ngModel)]="avenant.reference" required>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_motif">Motif</label>
+                    <input id="field_motif" type="text" class="form-control" name="motif"
+                           [(ngModel)]="avenant.motif">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_montant">Montant</label>
+                    <input id="field_montant" type="number" min="0" class="form-control" name="montant"
+                           [(ngModel)]="avenant.montant" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_temp">Temps</label>
+                    <input id="field_temp" type="text" class="form-control" name="temp"
+                           [(ngModel)]="avenant.temps" required>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date</label>
+                    <div class="input-group">
+                        <input id="field_date" type="date" class="form-control" name="date"
+                               [(ngModel)]="avenant.date" required/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <fieldset>
+        <legend>Joindre des ficichiers</legend>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Fichiers à joindre</label>
+                <input type="file" name="fileAvenant" class="form-control" multiple
+                       (change)="setFileDataAvenant($event)">
+                <ul>
+                    <li *ngFor="let file of fichiers">
+                        <span class="mt-2">{{file?.name}}</span>
+                        <span class="mt-2">{{file?.size}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </fieldset>
+    <div class="float-left"> <span *ngIf="isSaving">
+                <img src="../../../../content/images/ajax-loader.gif"/>
+              </span>
+    </div>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerAvenant()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer"
+                (click)='saveAvenant()' [disabled]="editFormAvenant.form.invalid || isSaving"
+                class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- creation et modification d'une liquidation -->
+<!------------------------------------------------------->
+<p-dialog header="Création/Modification d'une liquidation" [(visible)]="displayliquidation" [modal]="true"
+          [responsive]="true"
+          (onHide)="annulerLiquidation()"
+          [style]="{width: '40%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate (ngSubmit)="saveLiquidation()" #editForm="ngForm">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_montant_liquidation">Montant</label>
+                    <input id="field_montant_liquidation" type="text" class="form-control" name="montant"
+                           [(ngModel)]="liquidation.montant" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date_liquidation">Date</label>
+                    <div class="input-group">
+                        <input id="field_date_liquidation" type="date" class="form-control" name="date"
+                               [(ngModel)]="liquidation.date" required/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <fieldset>
+        <legend>Joindre des ficichiers</legend>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Fichiers à joindre</label>
+                <input type="file" name="fileLiquidation" class="form-control" multiple
+                       (change)="setFileDataLiquidation($event)">
+                <ul>
+                    <li *ngFor="let file of fichiers">
+                        <span class="mt-2">{{file?.name}}</span>
+                        <span class="mt-2">{{file?.size}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </fieldset>
+    <div class="float-left"> <span *ngIf="isSaving">
+                <img src="../../../../content/images/ajax-loader.gif"/>
+              </span>
+    </div>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerLiquidation()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer"
+                (click)='saveLiquidation()' class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+
+<!-- creation et modification d'une résiliation -->
+<!------------------------------------------------------->
+<p-dialog header="Création/Modification d'une résiliation" [(visible)]="displayresiliation" [modal]="true"
+          [responsive]="true" (onHide)="annulerResiliation()"
+          [style]="{width: '40%', minWidth: '300px'}" [minY]="70" [maximizable]="true">
+    <form name="editForm" role="form" novalidate (ngSubmit)="saveResiliation(statusExecution)"
+          #editFormResiliation="ngForm">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_montant">Motif</label>
+                    <input id="field_montant_Resiliation" type="text" class="form-control" name="montant"
+                           [(ngModel)]="statusExecution.motif" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date</label>
+                    <div class="input-group">
+                        <input id="field_date_Resiliation" type="date" class="form-control" name="date"
+                               [(ngModel)]="statusExecution.dateSuspendu" required/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerResiliation()'></button>
+        <button type="submit" pButton icon="fa fa-save" (click)="saveResiliation(statusExecution)" label="Enregistrer"
+                [disabled]="editFormResiliation.form.invalid || isSaving" class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+<!------------------------------------------------------>
+<!-- creation et modification  ordre de service -->
+<!------------------------------------------------------->
+<p-dialog header="Création/Modification d'un ordre de service" [(visible)]="displayOrdre" [modal]="true"
+          [responsive]="true"
+          (onHide)="annulerOrdreService()"
+          [style]="{width: '70%', minWidth: '100px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <div class="container">
+        <form name="editForm" role="form" novalidate #editFormOrdre="ngForm">
+            <div class="ui-dialog-content" style="height: 500px">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="field_delai">
+                                    Délai</label>
+                                <input type="number"  class="form-control"
+                                       name="delai" id="field_delai"
+                                       [(ngModel)]="ordreservice.delai" required/>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="field_libelle">Libelle</label>
+                                <input id="field_libelle" type="libelle" class="form-control" name="libelle"
+                                       [(ngModel)]="ordreservice.libelle" required/>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="field_etat">Etat</label>
+                                <select class="form-control" name="etat" id="field_etat"
+                                        [(ngModel)]="ordreservice.etat" required>
+                                    <option value="INITIAL">INITIAL</option>
+                                    <option value="ENCOURS">ENCOURS</option>
+                                    <option value="SUSPENDU">SUSPENDU</option>
+                                    <option value="TERMINE">TERMINE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="field_type">Type</label>
+                                <select class="form-control" name="type" id="field_type"
+                                        [(ngModel)]="ordreservice.type" required>
+                                    <option value="COMMANDE">COMMANDE</option>
+                                    <option value="SERVICE">SERVICE</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="field_dateDebut">Date</label>
+                                <div class="input-group">
+                                    <input id="field_dateDebute" type="date" class="form-control" name="dateDebut"
+                                           [(ngModel)]="ordreservice.dateDebut" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="ui-inputgroup mr-1">
+                        <span class="ui-inputgroup-addon"><span class="font-weight-bold">Attributaire</span></span>
+                        <p-dropdown [options]="candidatLots" [(ngModel)]="contrat12.candidatLot" name="candidatLot" placeholder="Selectionner un attributaire"
+                                    [style]="{'width': '250px'}" filter="filter"
+                                    showClear="showClear" optionLabel="candidat.nomStructure" (onChange)="loadContrat1()"
+                                    required [filter]="true"></p-dropdown>
+                    </div>
+
+                    <div class="card-body">
+                        <p-table [value]="contratbyattributaire" [(selection)]="contratSelected" dataKey="id">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th style="width: 3em">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th scope="col">Reférence Contrat
+                                        <fa-icon [icon]="'sort'"></fa-icon>
+                                    </th>
+                                    <th scope="col">Date de signature
+                                        <fa-icon [icon]="'sort'"></fa-icon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+
+                            <!--<ng-template pTemplate="body" let-contrat>
+                                <tr>
+                                    <td>
+                                        <p-tableCheckbox
+                                            [value]="contrat">
+                                        </p-tableCheckbox>
+                                    </td>
+                                    <td>{{contrat.reference}}</td>
+                                    <td>{{contrat.dateSignature}}</td>-->
+
+                            <ng-template pTemplate="body" let-contr>
+
+                                <tr>
+                                    <td>
+                                        <p-tableCheckbox
+                                            [value]="contr">
+                                        </p-tableCheckbox>
+                                    </td>
+                                    <td>{{contr.reference}}</td>
+                                    <td>{{contr.dateSignature}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <fieldset>
+            <legend>Joindre des ficichiers</legend>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>Fichiers à joindre</label>
+                    <input type="file" name="fileordreService" class="form-control" multiple
+                           (change)="setFileAddDataOrdreService($event)">
+                    <ul>
+                        <li *ngFor="let file of fichiers">
+                            <span class="mt-2">{{file?.name}}</span>
+                            <span class="mt-2">{{file?.size}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </fieldset>
+        <div class="float-left"> <span *ngIf="isSaving">
+                <img src="../../../../content/images/ajax-loader.gif"/>
+              </span>
+        </div>
+    </div>
+    <p-footer>
+        <div class="text-center">
+            <button type="button" pButton class="ui-button-secondary text-danger" icon="fa fa-ban"
+                    (click)="annulerOrdreService()" label="Fermer">
+            </button>
+            <button type="button" pButton  (click)="saveOrdreService()" [disabled]="editFormOrdre.invalid || isSaving"
+                    icon="fa fa-save" class="ui-button-secondary text-primary" label="Enregistrer">
+            </button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- creation et modification de caution -->
+<!------------------------------------------------------->
+<p-dialog header="Création/Modification d'une caution" [(visible)]="displaycautionCandidat" [modal]="true"
+          [responsive]="true"
+          (onHide)="annulerCaution()"
+          [style]="{width: '40%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate (ngSubmit)="saveCaution()" #editForm="ngForm">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <h6 class="font-weight-bold">Description</h6>
+                    <p-editor [(ngModel)]="cautionCandidatLot.description" [style]="{'height':'110px'}"
+                              name="description" required>
+                        <p-header>
+                            <span class="ql-formats">
+                                <button class="ql-bold" aria-label="Bold"></button>
+                                <button class="ql-italic" aria-label="Italic"></button>
+                                <button class="ql-underline" aria-label="Underline"></button>
+                            </span>
+                        </p-header>
+                    </p-editor>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_intitution_financiaire">Institution financiaire</label>
+                    <input id="field_intitution_financiaire" type="text" class="form-control"
+                           name="institutionFinanciaire"
+                           [(ngModel)]="cautionCandidatLot.institutionFinanciere" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_montant_caution">Montant</label>
+                    <input id="field_montant_caution" type="number" class="form-control" name="montant"
+                           [(ngModel)]="cautionCandidatLot.montantCandidat" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_validite">Validité de la caution</label>
+                    <input id="field_validite" type="number" class="form-control" name="validite"
+                           [(ngModel)]="cautionCandidatLot.validationCandidat" required="">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_datedebut">Date</label>
+                    <div class="input-group">
+                        <input id="field_datedebut" type="date" class="form-control" name="date"
+                               [(ngModel)]="cautionCandidatLot.dateDebut" required/>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <fieldset>
+        <legend>Joindre des ficichiers</legend>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Fichiers à joindre</label>
+                <input type="file" name="fileLiquidation" class="form-control" multiple
+                       (change)="setFileDataCandidatCautionLot($event)">
+                <ul>
+                    <li *ngFor="let file of fichiers">
+                        <span class="mt-2">{{file?.name}}</span>
+                        <span class="mt-2">{{file?.size}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </fieldset>
+    <div class="float-left"> <span *ngIf="isSaving">
+                <img src="../../../../content/images/ajax-loader.gif"/>
+              </span>
+    </div>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerCaution()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer"
+                [disabled]="editForm.invalid || isSaving"
+                (click)='saveCaution()' class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- creation et modification de contrat -->
+<!------------------------------------------------------->
+<p-dialog header="Création/Modification d'un contrat" [(visible)]="displayContrat" [modal]="true"
+          [responsive]="true"
+          (onHide)="annulerContrat()"
+          [style]="{width: '40%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate (ngSubmit)="saveContrat1()" #editFormcontrat="ngForm">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reference">Reference</label>
+                    <input id="field_reference" type="text" class="form-control"
+                           name="reference"
+                           [(ngModel)]="contratajout.reference" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date_signataire">Date signature</label>
+                    <input id="field_date_signataire" type="date" class="form-control"
+                           name="institutionFinanciaire"
+                           [(ngModel)]="contratajout.dateSignature" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_montant_caution">Date debut prévu</label>
+                    <input id="field_date_debut" type="date" class="form-control" name="montant"
+                           [(ngModel)]="contratajout.dateDebutPrevu" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_validite">Date fin prévu</label>
+                    <input id="field_date_fin" type="date" class="form-control" name="validite"
+                           [(ngModel)]="contratajout.dateFinPrevu" required="">
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix float-right">
+
+        <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                label="Annuler" (click)='annulerContrat()'></button>
+        <button type="submit" pButton icon="fa fa-save" label="Enregistrer"
+                [disabled]="editFormcontrat.invalid || isSaving"
+                (click)='saveContrat1()' class="ui-button-secondary text-info">
+        </button>
+    </div>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier contrat -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModalcontrat" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers contrats
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataContrat($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileContrat(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierContrat(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier penalite -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModal" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers penalites
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataPenalite($event)">
+                </div>
+                <!--<div *ngIf="fileListe==undefined" class="col-sm-4 text-right">
+                    <button type="button" class="ui-button-secondary text-primary" [disabled]="fileListe==undefined" pButton (click)="addFile(null)"
+                            label="Uploader" icon="fa fa-plus"></button>
+                </div>-->
+                <div class="col-sm-4 text-right">
+                                        <span *ngIf="isSaving">
+                                            <img src="../../../../content/images/ajax-loader.gif"/>
+                                        </span>
+                    <div *ngIf="fileListe!=undefined" class="col-sm-4 text-right">
+                        <button type="button" class="ui-button-secondary text-primary" [disabled]="fileListe==undefined || isSaving"
+                                pButton (click)="addFilePenalite(fileListe)"
+                                label="Uploader" icon="fa fa-save">
+                        </button>
+                    </div>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                                            <br>
+                                            <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierPenalite(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-footer>
+    </p-footer>
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier statutExecition -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModalstatutexecution" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers statut Execution
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataStatutExecution($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileStatutExecution(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierStatutExecution(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier contentieux -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModalcontentieux" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers contentieux
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataContentieux($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileContentieux(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierContentizux(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier avenant -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModalavenant" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers Avenants
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataAvenant($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileAvenant(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierAvenant(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier liquidation -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModalliquidation" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers Liquidations
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataLiquidation($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileLiquidation(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierLiquidation(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier ordre de service -->
+<!------------------------------------------------------->
+
+
+<p-dialog [(visible)]="showFicModalordreService" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers contrats
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataOrdre($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileOrdre(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierContrat(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+
+<!------------------------------------------------------>
+<!-- uploader et downloader un fichier caution -->
+<!------------------------------------------------------->
+<p-dialog [(visible)]="showFicModalcaution" [style]="{width: '50%', height: '200px'}">
+    <p-header>
+        Fichiers Cautions
+    </p-header>
+    <p-table [value]="dataFiles" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-8">
+                    <input type="file" name="file" class="form-control" multiple
+                           (change)="setFileAddDataCandidatCautionLot($event)">
+                </div>
+                <div class="col-sm-4 text-right">
+                        <span *ngIf="isSaving">
+                            <img src="../../../../content/images/ajax-loader.gif"/>
+                        </span>
+                    <button type="button" class="ui-button-secondary text-primary"
+                            [disabled]="fileListe==undefined || isSaving"
+                            pButton (click)="addFileCandidatCautionLot(fileListe)"
+                            label="Uploader" icon="fa fa-save">
+                    </button>
+                </div>
+                <span class="text-center" *ngIf="isLoading">
+                        <br>
+                        <img src="../../../../content/images/ajax-loader.gif"/> Chargement en cours...
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th width="30%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>{{fichier.fileName}}</td>
+                <td width="30%">
+                    <button type="button" class="ui-button-secondary text-primary" pButton
+                            (click)="dowloadFichier(fichier)"
+                            label="Télécharger" icon="fa fa-download"></button>
+                    <button type="button" class="ui-button-secondary text-danger" icon="fa fa-trash" pButton
+                            (click)="retirerFihierCandidatCautionLot(fichier)"
+                            label="Retirer"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!-- <p-footer>
+     </p-footer>-->
+</p-dialog>
+
+<!------------------------------------------------------->
+<!-- Ajout de conctrat -->
+<!------------------------------------------------------->
+
+<p-dialog [(visible)]="showlistLot" [style]="{width: '70%', height: '300px'}" (onHide)="annulerContrat()">
+    <div class="col-sm">
+        <div class="card">
+            <label class="font-weight-bold text-primary" style="text-align: center; font-size: 20px;">Liste des attributaires de l'activité : <span>{{activite?.nomActivite}}</span></label>
+            <div class="card-header">
+               <span class="font-weight-bold text-black-50">Contrat
+                <span class="font-weight-bold float-right">
+                    <button
+                        style="margin-left: -15px; height: 35px; margin-top: 0px"
+                        type="button" (click)="showcontrat()" class="ui-button-secondary text-primary" [disabled]="candidatLotSelected?.length<1">
+                                <fa-icon [icon]="'plus'"></fa-icon> Ajouter un contrat
+                            </button>
+               </span>
+               </span>
+            </div>
+            <div class="ui-inputgroup mr-1">
+                <span class="ui-inputgroup-addon"><span class="font-weight-bold">Attributaire</span></span>
+                <p-dropdown appendTo='body' [options]="listeLots" [(ngModel)]="candidatLot12" placeholder="Selectionner un attributaire"
+                            [style]="{'width': '700px'}" filter="filter"
+                            showClear="showClear" optionLabel="candidat.nomStructure" (onChange)="loadAllAtributaireListbyActivite()"
+                            required [filter]="true"></p-dropdown>
+            </div>
+            <div class="card-body">
+                <p-table #data [value]="candidatLots" [paginator]="true" [rows]="20" [responsive]="true" [columns]="cols" [(selection)]="candidatLotSelected"
+                         [globalFilterFields]="['candidat.nomStructure','lot','DateDebutPrevu','DateFinPrevu']" dataKey="id">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                            <th>Lot</th>
+                            <th>Attributaire</th>
+                            <th>contrat</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-candidatLot let-columns="columns">
+                        <tr [pSelectableRow]="candidatLot">
+                            <td>
+                                <p-tableCheckbox [value]="candidatLot"></p-tableCheckbox>
+                            </td>
+                            <td>{{candidatLot?.lot?.description}}</td>
+                            <td>{{candidatLot?.candidat?.nomStructure}}</td>
+                            <td>
+                                <button type="button" pButton label="Associer à un contrat"
+                                        class="ui-button-secondary text-primary"
+                                        (click)="addContrat(contrat)"
+                                        icon="fa fa-plus"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+
+<p-confirmDialog #cd header="Confirmation" icon="pi pi-exclamation-triangle" class="text-warning">
+    <p-footer>
+        <button type="button" class="ui-button-secondary text-danger" pButton icon="pi pi-times" label="NON"
+                (click)="cd.reject()"></button>
+        <button type="button" class="ui-button-secondary text-danger" pButton icon="pi pi-check" label="OUI"
+                (click)="cd.accept()"></button>
+    </p-footer>
+</p-confirmDialog>
+<p-toast key="myKey" [style]="{marginTop: '80px'}" position="top-center"></p-toast>

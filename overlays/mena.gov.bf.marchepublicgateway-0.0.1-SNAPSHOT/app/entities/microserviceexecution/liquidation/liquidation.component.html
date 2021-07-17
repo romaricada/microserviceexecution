@@ -1,0 +1,76 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.home.title">Liquidations</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-liquidation" [routerLink]="['/liquidation/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.home.createLabel">
+            Create a new Liquidation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="liquidations?.length === 0">
+        <span jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.home.notFound">No liquidations found</span>
+    </div>
+    <div class="table-responsive" *ngIf="liquidations?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="montant"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.montant">Montant</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="date"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="deleted"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.deleted">Deleted</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="contrat.id"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionLiquidation.contrat">Contrat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let liquidation of liquidations ;trackBy: trackId">
+                <td><a [routerLink]="['/liquidation', liquidation.id, 'view' ]">{{liquidation.id}}</a></td>
+                <td>{{liquidation.montant}}</td>
+                <td>{{liquidation.date | date:'mediumDate'}}</td>
+                <td>{{liquidation.deleted}}</td>
+                <td>
+                    <div *ngIf="liquidation.contrat">
+                        <a [routerLink]="['/contrat', liquidation.contrat?.id, 'view' ]" >{{liquidation.contrat?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/liquidation', liquidation.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/liquidation', liquidation.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/liquidation', { outlets: { popup: liquidation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div [hidden]="liquidations?.length === 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

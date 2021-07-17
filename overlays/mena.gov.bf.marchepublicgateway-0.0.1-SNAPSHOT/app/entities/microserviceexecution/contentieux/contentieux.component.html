@@ -1,0 +1,281 @@
+<!--<span>
+
+                <label class="col-sm-12 font-weight-bold text-primary text-center">GESTION DES CONTENTIEUX </label>
+</span>
+<div>
+    <p-toolbar>
+        <div class="ui-g ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-7  pt-3 pl-3">
+                <p-dropdown [options]="exercices" placeholder="Selectionner une année" [style]="{'width': '220px'}"
+                            [(ngModel)]="exercice" (onChange)="exerciciceChange()" filter="filter" showClear="showClear"
+                            optionLabel="annee">
+                </p-dropdown>
+                <p-dropdown [options]="activites" placeholder="Selectionner une activité" [style]="{'width': '270px'}"
+                            [(ngModel)]="activite" (onChange)="activiteChange()" [disabled]="!exercice" filter="filter"
+                            showClear="showClear"
+                            optionLabel="nomActivite">
+                </p-dropdown>
+                <p-dropdown [options]="lots" placeholder="Selectionner un lot" [style]="{'width': '200px'}"
+                            [(ngModel)]="lot" (onChange)="filterDepouillement()" [disabled]="!activite" filter="filter"
+                            showClear="showClear"
+                            optionLabel="libelle">
+                </p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-5 p-2">
+                <div class="float-right">
+                    <button pButton class="ui-button-secondary text-primary" icon="fa fa-plus"
+                            label="Ajouter un contencieux" (click)="ajoutContentieux()"></button>
+                    &lt;!&ndash; <button type="button" pButton class="ui-button-secondary text-primary" icon="fa fa-check" label="Valider PPM"></button>&ndash;&gt;
+                </div>
+            </div>
+        </div>
+    </p-toolbar>
+    <br/>
+
+     <p-table #dataTable [globalFilterFields]="['objet', 'decision']" [value]="contentieuxes" [selection]="contentieuxSelecteds"  dataKey="id" [paginator]="true" [rows]="20" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                    <th style="width:75em">Objet du contentieux</th>
+                    <th style="width:8em">Associée décision</th>
+                   &lt;!&ndash; <th>Contrat</th>
+                    <th>Décision associée</th>&ndash;&gt;
+                    <th style="width:17em">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-contencieux let-columns="columns">
+                <tr [pSelectableRow]="contentieux">
+                    <td>
+                        <p-tableCheckbox></p-tableCheckbox>
+                    </td>
+                    <td>{{contentieux.objet}}</td>
+                    <td><button type="button" pButton label="Decision"
+                                class="ui-button-secondary text-primary"
+                                icon="fa fa-plus">
+                    </button></td>
+                    <td>
+                        <p-footer>
+                            <button type="button" pButton label="Modifier"
+                                    class="ui-button-secondary text-warning"
+                                    (click)="updateContentieux(contentieux)"
+                                    icon="fa fa-edit">
+                            </button>
+                            <button type="button" pButton label="Supprimer" class="ui-button-secondary text-danger"
+                                    (click)="supprimerReclamation(reclamation)" icon="fa fa-trash"></button>
+                        </p-footer>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+                <tr>
+                    <td colspan="5" align="center"><span class="text-danger"> Aucun contentieux trouvé ! </span></td>
+                </tr>
+            </ng-template>
+     </p-table>
+
+
+
+    <p-dialog header="CREATION/MODIFICATION D'UN CONTENTIEUX" [(visible)]="display" [modal]="true"
+              [responsive]="true"
+              (onHide)="previousState()"
+              [style]="{width: '40%', minWidth: '150px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+            <div class="ui-dialog-content">
+                <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+                    <div>
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label class="form-control-label">Contrat</label>
+                                <select class="form-control" id="field_contrat" name="contrat" [(ngModel)]="contentieux.contrat" required>
+                                    <option [ngValue]="null">...</option>
+                                    <option [ngValue]="lotOption.id" *ngFor="let lotOption of contrats">{{lotOption.reference}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="form-control-label" for="field_objet">Objet du contentieux</label>
+                                <input type="text" class="form-control" name="contentieux_objet" id="field_objet" [(ngModel)]="contentieux.objet" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label class="form-control-label" for="field_contentieux_decision">Statut décision</label>
+                                <input type="text" class="form-control" name="contentieux_decision" id="field_contentieux_decision" [(ngModel)]="contentieux.decisionContentieux" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        <fieldset>
+            <legend>Liste des décisions</legend>
+            <div class="col-sm-12">
+                <p-table #soumFilter  dataKey="id"
+                         [globalFilterFields]="[]"
+                         editMode="row">
+                    <ng-template pTemplate="caption">
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <input type="text" pInputText size="50" placeholder="Rechercher"
+                                       (input)="soumFilter.filterGlobal($event.target.value, 'contains')"
+                                       style="width:auto">
+                            </div>
+
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th width="20px">N°</th>
+                            <th>Objet du contentieux</th>
+                            <th>date</th>
+                            <th>Structure</th>
+                            <th>référence de la décision</th>
+                            <th>Date de la décision</th>
+                            <th>Statut</th>
+                            <th style="width: 20em">Action</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reclamationCandidatLot let-editing="editing" let-expanded="expanded" let-columns="columns"
+                                 let-i="rowIndex">
+                        <tr [pSelectableRow]="reclamationCandidatLot" [pEditableRow]="reclamationCandidatLot">
+                            <td>{{i + 1}}</td>
+
+                            <td>
+                               &lt;!&ndash; <a href="#" [pRowToggler]="reclamationCandidatLot">
+                                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                                    &nbsp; <i class="fa fa-eye"></i>
+                                    <span>{{reclamationCandidatLot?.candidatLot?.candidat?.nomStructure}}</span></a>&ndash;&gt;
+                            </td>
+                            <td>&lt;!&ndash;{{reclamationCandidatLot?.candidatLot?.candidat?.adresse}}&ndash;&gt;</td>
+                            <td>&lt;!&ndash;{{reclamationCandidatLot?.candidatLot?.candidat?.email}}&ndash;&gt;</td>
+                            <td>
+&lt;!&ndash;
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" name="motif"
+                                               [(ngModel)]="reclamationCandidatLot.motif">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{reclamationCandidatLot?.motif}}
+                                    </ng-template>
+                                </p-cellEditor>
+&ndash;&gt;
+                            </td>
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <div class="input-group">
+                                            <input pInputText type="date" class="form-control" [name]="'date' + i"
+                                                   ngbDatepicker #dateDp="ngbDatepicker"/>
+                                            &lt;!&ndash;  <span class="input-group-append">
+                                    <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon
+                                        [icon]="'calendar-alt'"></fa-icon></button>
+                                      </span>&ndash;&gt;
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{reclamationCandidatLot?.date }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td *ngIf="reclamationCandidatLot.decisionId"><span class = "badge badge-pill badge-success"> Décision associée </span>
+                            <td *ngIf="!reclamationCandidatLot.decisionId"><span class = "badge badge-pill badge-danger"> Décision non associée </span>
+
+                            </td>
+                            <td>
+                                <button type="button" class="ui-button-secondary text-primary" pButton
+                                        icon="fa fa-plus"  (click)="addDecision(reclamationCandidatLot)"
+                                        label="Décision"></button>
+                                <button type="button" class="ui-button-secondary text-danger"
+                                        (click)="retireSoumissionnaire(reclamationCandidatLot)"
+                                        [disabled]="reclamationCandidatLot.decisionId == null " pButton
+                                        icon="fa fa-trash" label="Retirer"></button>
+                                &lt;!&ndash; <button type="button" class="ui-button-secondary text-secondary"
+                                         (click)="modifierPiece(soumissionaire, true)" pButton
+                                         icon="fa fa-edit" label="Modifier piéce"></button>&ndash;&gt;
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td colspan="8" align="center"><span
+                                class="text-danger"> Aucun candidat trouvé ! </span></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </fieldset>
+
+
+
+
+
+
+        <p-footer>
+                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
+                    <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                            label="Fermer" (click)='annuler()'>
+                    </button>
+                    <button type="button" pButton icon="fa fa-check" label="Valider"
+                            (click)="save()" class="ui-button-secondary text-info">
+                    </button>
+                </div>
+            </p-footer>
+        </p-dialog>
+
+    &lt;!&ndash;
+            <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"  jhiSortBy="objet"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContentieux.objet">Objet</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"  jhiSortBy="deleted"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContentieux.deleted">Deleted</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"  jhiSortBy="contrat.id"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContentieux.contrat">Contrat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"  jhiSortBy="decisionContentieux.id"><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContentieux.decisionContentieux">Decision Contentieux</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let contentieux of contentieuxes ;trackBy: trackId">
+                    <td><a [routerLink]="['/contentieux', contentieux.id, 'view' ]">{{contentieux.id}}</a></td>
+                    <td>{{contentieux.objet}}</td>
+                    <td>{{contentieux.deleted}}</td>
+                    <td>
+                        <div *ngIf="contentieux.contrat">
+                            <a [routerLink]="['/contrat', contentieux.contrat?.id, 'view' ]" >{{contentieux.contrat?.id}}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="contentieux.decisionContentieux">
+                            <a [routerLink]="['/decision-contentieux', contentieux.decisionContentieux?.id, 'view' ]" >{{contentieux.decisionContentieux?.id}}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/contentieux', contentieux.id, 'view' ]"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon [icon]="'eye'"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/contentieux', contentieux.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/contentieux', { outlets: { popup: contentieux.id + '/delete'} }]"
+                                    replaceUrl="true"
+                                    queryParamsHandling="merge"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    &ndash;&gt;
+    </div>-->
+

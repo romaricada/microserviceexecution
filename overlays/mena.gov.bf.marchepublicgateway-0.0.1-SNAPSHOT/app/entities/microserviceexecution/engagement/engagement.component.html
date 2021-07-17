@@ -1,0 +1,248 @@
+<div>
+    <div class="entete">
+        <p-toolbar>
+            <div class="ui-g ui-g-12 ui-g-nopad">
+                <div class="ui-g-12 ui-md-7  pt-3 pl-3">
+                    <label class="col-sm-7 font-weight-bold text-primary">GESTION DES ENGAGEMENTS</label>
+                </div>
+                <div class="ui-g-12 ui-md-5 p-2">
+                    <div class="float-right">
+                        <button type="button" pButton class="ui-button-secondary text-primary"
+                                icon="fa fa-plus" label="Engagement" (click)="add()">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </p-toolbar>
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+                <div class="ui-g ui-g-12 ui-g-nopad">
+                    <div class="ui-inputgroup mr-1">
+                        <span class="ui-inputgroup-addon"><span class="font-weight-bold">Exercice</span></span>
+                        <p-dropdown [options]="exercices" [filter]="true" optionLabel="annee" [(ngModel)]="exercice"
+                                    name="exercice" placeholder="Selectionner un exercice" [resetFilterOnHide]="true" (onChange)="exerciceLoad()">
+                        </p-dropdown>
+                    </div>
+                    <div class="ui-inputgroup mr-1">
+                        <span class="ui-inputgroup-addon"><span class="font-weight-bold">Activité</span></span>
+                        <p-dropdown [options]="activites" [filter]="true" optionLabel="nomActivite" [(ngModel)]="activite"
+                                    name="activite" placeholder="Selectionner une activité" [resetFilterOnHide]="true" (onChange)="activiteLoad()"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-toolbar-group-right">
+                <div class="text-right">
+                    <input type="text" pInputText size="45" placeholder="Rechercher"
+                           (input)="dataTable.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                    <button type="button" pButton icon="fa fa-refresh" label="Actualiser" [ngbTooltip]="'Raffraichir'" [placement]="'top'" (click)="ngOnInit()">
+
+                    </button>
+                </div>
+            </div>
+        </p-toolbar>
+    </div>
+    <div class="tableau">
+       <p-table #dataTable [value]="engagements" dataKey="id">
+           <ng-template pTemplate="header">
+               <tr>
+                   <th>Contrat</th>
+                   <th>Lot</th>
+                   <th>Montant engagé</th>
+                   <th>Date</th>
+                   <th>Action</th>
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-engagement let-expanded="expanded" let-columns="columns">
+               <tr>
+                   <td>
+                       <a [pRowToggler]="engagement">
+                           <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                           <span>{{engagement.contrat[0].reference}}</span>
+                       </a>
+                   </td>
+                   <td>{{engagement.lot[0].libelle}}</td>
+                   <td>{{engagement.montantEngage}}</td>
+                   <td>{{engagement.date}}</td>
+                   <td>
+                       <button type="button" class="ui-button-secondary text-warning" pButton icon="fa fa-edit" label="Modifier" (click)="modif(engagement)"></button>
+                       <button type="button" class="ui-button-secondary text-danger" pButton icon="fa fa-remove" label="Supprimer" (click)="sup(engagement)"></button>
+                   </td>
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="rowexpansion" let-engagement2 let-rowIndex="rowIndex">
+               <tr>
+                   <th colspan="2">Ligne crédit</th>
+                   <th style="width: 12em" colspan="2">Montant engagé</th>
+                   <th >Budget</th>
+               </tr>
+               <tr *ngFor="let ligneEngage of engagement2.engagementLigneBudgetaires">
+                   <td colspan="2">{{ligneEngage?.ligneBudgetaires[0]?.ligneCredit}}</td>
+                   <td colspan="2" >{{ligneEngage.montantEngageLigne}}</td>
+                   <td>{{ligneEngage.ligneBudgetaires[0].budget}}</td>
+               </tr>
+           </ng-template>
+           <ng-template pTemplate="emptymessage" let-columns>
+               <tr> <td colspan="5" style="text-align: center; font-size: 1.2em; color: red; font-weight: bold;"> <span class="text-danger"> Aucun engagement trouvé ! </span> </td> </tr>
+           </ng-template>
+       </p-table>
+    </div>
+</div>
+<p-dialog header="Création/Modification un engagement" [(visible)]="display" [modal]="true" [responsive]="true" (onHide)="annuler()"
+          [style]="{width: '60%', minWidth: '300px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+    <form name="editForm" role="form" novalidate #editForm="ngForm">
+        <div class="row">
+            <!--div class="col-sm-4">
+                <div class="form-group">
+                    <label class="form-control-label">Activité</label>
+                    <select class="form-control" id="field_activite" name="activite" [(ngModel)]="activite" (click)="exerciceLoad()">
+                        <option [ngValue]="null">...</option>
+                        <option [ngValue]="activiteOption" *ngFor="let activiteOption of activites">{{activiteOption.nomActivite}}</option>
+                    </select>
+                </div>
+            </div-->
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label">Lot</label>
+                    <select class="form-control" id="field_lot" name="lot" [(ngModel)]="lot.id" (click)="activiteLoad()" required>
+                        <option [ngValue]="null">...</option>
+                        <option [ngValue]="lotOption.id" *ngFor="let lotOption of lots">{{lotOption.libelle}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date de l'engagement</label>
+                    <input id="field_date" type="date" class="form-control" name="date"
+                           [(ngModel)]="engagement.date" required>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="display1 === true">
+            <div class="tabAjout">
+                <p-table [value]="besoinLigneBudgetaires">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Ligne budgetaire</th>
+                            <th>Montant à engager</th>
+                            <th>Dotation corrigée</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-besoinLigneBudgetaire let-i="index">
+                        <tr>
+                            <td>{{besoinLigneBudgetaire.ligneBudget.ligneCredit}}</td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="number" name={{(i+3)*2}} id={{(i+3)*4}} min="0" [(ngModel)]="besoinLigneBudgetaire.ligneBudget.montantEstime" (change)="total(besoinLigneBudgetaire.ligneBudget.montantEstime, besoinLigneBudgetaire.ligneBudget)" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <span *ngIf="besoinLigneBudgetaire.ligneBudget.montantEstime !== undefined" >{{besoinLigneBudgetaire.ligneBudget.montantEstime}}</span>
+                                        <span *ngIf="besoinLigneBudgetaire.ligneBudget.montantEstime === null">Cliquez...</span>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td *ngIf="besoinLigneBudgetaire.aecp === true">{{besoinLigneBudgetaire.ligneBudget.dotCorAE}}</td>
+                            <td *ngIf="besoinLigneBudgetaire.aecp === false">{{besoinLigneBudgetaire.ligneBudget.dotCorCP}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td>Total</td>
+                            <td>{{contMontant}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+        <div *ngIf="display1 === false">
+            <p-table [value]="engagementLigneBudgetaires">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Ligne budgetaire</th>
+                        <th>Montant à engager</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-eng let-i="index">
+                    <tr>
+                        <td>{{eng.ligneBudgetaires[0]?.ligneCredit}}</td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="number" name={{(i+3)}} id={{(i+3)}} min="0" [(ngModel)]="eng.montantEngageLigne" (change)="totalModif(eng.montantEngageLigne, eng)" required>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <span *ngIf="eng.montantEngageLigne !== undefined" >{{eng.montantEngageLigne}}</span>
+                                    <span *ngIf="eng.montantEngageLigne === null">0</span>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td colspan="1">Total</td>
+                        <td colspan="2">{{contMontant}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <!--div class="col-sm-6">
+            <div class="form-group">
+                <label class="form-control-label" for="field_date">Date de l'engagement</label>
+                <input id="field_date" type="date" class="form-control" name="date"
+                       [(ngModel)]="engagement.date" required>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="form-control-label" for="field_montant">Montant engagé</label>
+                <input id="field_montant" type="number" class="form-control" name="montant"
+                       [(ngModel)]="engagement.montantEngage" required>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="form-control-label">Ligne budgetaire</label>
+                <select class="form-control" id="field_ligne" name="libelle" [(ngModel)]="ligneBudgetaire">
+                    <option [ngValue]="null">...</option>
+                    <option [ngValue]="ligneOption" *ngFor="let ligneOption of ligneBudgetaires">{{ligneOption.ligneCredit}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="form-control-label">Lot</label>
+                <select class="form-control" id="field_lot" name="libelle" [(ngModel)]="lot">
+                    <option [ngValue]="null">...</option>
+                    <option [ngValue]="lotOption" *ngFor="let lotOption of lots">{{lotOption.libelle}}</option>
+                </select>
+            </div>
+        </div>
+    </div-->
+    </form>
+
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
+            <button type="button" pButton icon="fa fa-close" class="ui-button-secondary text-danger"
+                    label="Fermer" (click)='annuler()'></button>
+            <button type="submit" pButton icon="fa fa-save" label="Enregistrer"
+                    (click)='save()' class="ui-button-secondary text-info">
+            </button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<div class="message">
+    <p-confirmDialog #cd header="Confirmation" icon="pi pi-exclamation-triangle" class="text-warning">
+        <p-footer>
+            <button type="button" class="ui-button-secondary text-danger" pButton icon="pi pi-times" label="NON"
+                    (click)="cd.reject()"></button>
+            <button type="button" class="ui-button-secondary text-danger" pButton icon="pi pi-check" label="OUI"
+                    (click)="cd.accept()"></button>
+        </p-footer>
+    </p-confirmDialog>
+    <p-toast key="1" [style]="{marginTop: '80px'}" position="top-center"></p-toast>
+</div>

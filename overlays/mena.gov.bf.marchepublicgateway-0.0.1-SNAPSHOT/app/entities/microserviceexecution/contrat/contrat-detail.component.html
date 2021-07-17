@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="contrat">
+            <h2><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.detail.title">Contrat</span> {{contrat.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.reference">Reference</span></dt>
+                <dd>
+                    <span>{{contrat.reference}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.dateSignature">Date Signature</span></dt>
+                <dd>
+                    <span>{{contrat.dateSignature}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.dateDebutPrevu">Date Debut Prevu</span></dt>
+                <dd>
+                    <span>{{contrat.dateDebutPrevu}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.dateFinPrevu">Date Fin Prevu</span></dt>
+                <dd>
+                    <span>{{contrat.dateFinPrevu}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.candidatLotId">Candidat Lot Id</span></dt>
+                <dd>
+                    <span>{{contrat.candidatLotId}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.cautionCandidatLotId">Caution Candidat Lot Id</span></dt>
+                <dd>
+                    <span>{{contrat.cautionCandidatLotId}}</span>
+                </dd>
+                <dt><span jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.deleted">Deleted</span></dt>
+                <dd>
+                    <span>{{contrat.deleted}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/contrat', contrat.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

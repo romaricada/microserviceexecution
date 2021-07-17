@@ -1,0 +1,81 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-membre-commission-heading" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.home.createOrEditLabel">Create or edit a Membre Commission</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.activiteId" for="field_activiteId">Activite Id</label>
+                    <input type="number" class="form-control" name="activiteId" id="field_activiteId"
+                           formControlName="activiteId"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.referenceArrete" for="field_referenceArrete">Reference Arrete</label>
+                    <input type="text" class="form-control" name="referenceArrete" id="field_referenceArrete"
+                           formControlName="referenceArrete"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.poste" for="field_poste">Poste</label>
+                    <select class="form-control" name="poste" formControlName="poste" id="field_poste">
+                        <option value="PRESIDENT">{{'marchepublicgatewayApp.Poste.PRESIDENT' | translate}}</option>
+                        <option value="RAPPORTEUR">{{'marchepublicgatewayApp.Poste.RAPPORTEUR' | translate}}</option>
+                        <option value="MEMBRE">{{'marchepublicgatewayApp.Poste.MEMBRE' | translate}}</option>
+                        <option value="OBSERVATEUR">{{'marchepublicgatewayApp.Poste.OBSERVATEUR' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('poste').invalid && (editForm.get('poste').dirty || editForm.get('poste').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('poste').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.deleted" for="field_deleted">Deleted</label>
+                    <input type="checkbox" class="form-control" name="deleted" id="field_deleted"
+                           formControlName="deleted"/>
+                    <div *ngIf="editForm.get('deleted').invalid && (editForm.get('deleted').dirty || editForm.get('deleted').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('deleted').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.membre" for="field_membre">Membre</label>
+                    <select class="form-control" id="field_membre" name="membre" formControlName="membre">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="membreOption.id === editForm.get('membre').value?.id ? editForm.get('membre').value : membreOption" *ngFor="let membreOption of membres; trackBy: trackMembreById">{{membreOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.typeCommission" for="field_typeCommission">Type Commission</label>
+                    <select class="form-control" id="field_typeCommission" name="typeCommission" formControlName="typeCommission">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="typeCommissionOption.id === editForm.get('typeCommission').value?.id ? editForm.get('typeCommission').value : typeCommissionOption" *ngFor="let typeCommissionOption of typecommissions; trackBy: trackTypeCommissionById">{{typeCommissionOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microservicedaccamMembreCommission.tache" for="field_tache">Tache</label>
+                    <select class="form-control" id="field_tache" name="tache" formControlName="tache">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tacheOption.id === editForm.get('tache').value?.id ? editForm.get('tache').value : tacheOption" *ngFor="let tacheOption of taches; trackBy: trackTacheById">{{tacheOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

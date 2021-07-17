@@ -1,0 +1,111 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-contrat-heading" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.home.createOrEditLabel">Create or edit a Contrat</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.reference" for="field_reference">Reference</label>
+                    <input type="text" class="form-control" name="reference" id="field_reference"
+                           formControlName="reference"/>
+                    <div *ngIf="editForm.get('reference').invalid && (editForm.get('reference').dirty || editForm.get('reference').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('reference').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.dateSignature" for="field_dateSignature">Date Signature</label>
+                    <div class="input-group">
+                        <input id="field_dateSignature" type="text" class="form-control" name="dateSignature" ngbDatepicker  #dateSignatureDp="ngbDatepicker" formControlName="dateSignature"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateSignatureDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('dateSignature').invalid && (editForm.get('dateSignature').dirty || editForm.get('dateSignature').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateSignature').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.dateDebutPrevu" for="field_dateDebutPrevu">Date Debut Prevu</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutPrevu" type="text" class="form-control" name="dateDebutPrevu" ngbDatepicker  #dateDebutPrevuDp="ngbDatepicker" formControlName="dateDebutPrevu"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutPrevuDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('dateDebutPrevu').invalid && (editForm.get('dateDebutPrevu').dirty || editForm.get('dateDebutPrevu').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateDebutPrevu').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.dateFinPrevu" for="field_dateFinPrevu">Date Fin Prevu</label>
+                    <div class="input-group">
+                        <input id="field_dateFinPrevu" type="text" class="form-control" name="dateFinPrevu" ngbDatepicker  #dateFinPrevuDp="ngbDatepicker" formControlName="dateFinPrevu"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinPrevuDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('dateFinPrevu').invalid && (editForm.get('dateFinPrevu').dirty || editForm.get('dateFinPrevu').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateFinPrevu').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.candidatLotId" for="field_candidatLotId">Candidat Lot Id</label>
+                    <input type="number" class="form-control" name="candidatLotId" id="field_candidatLotId"
+                           formControlName="candidatLotId"/>
+                    <div *ngIf="editForm.get('candidatLotId').invalid && (editForm.get('candidatLotId').dirty || editForm.get('candidatLotId').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('candidatLotId').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('candidatLotId')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.cautionCandidatLotId" for="field_cautionCandidatLotId">Caution Candidat Lot Id</label>
+                    <input type="number" class="form-control" name="cautionCandidatLotId" id="field_cautionCandidatLotId"
+                           formControlName="cautionCandidatLotId"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="marchepublicgatewayApp.microserviceexecutionContrat.deleted" for="field_deleted">Deleted</label>
+                    <input type="checkbox" class="form-control" name="deleted" id="field_deleted"
+                           formControlName="deleted"/>
+                    <div *ngIf="editForm.get('deleted').invalid && (editForm.get('deleted').dirty || editForm.get('deleted').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('deleted').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

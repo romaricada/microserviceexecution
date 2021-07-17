@@ -1,0 +1,26 @@
+-------------------- Auto-Git Log --------------------
+		Sat Jun 06 2020 16:02:13 GMT+0000 (Greenwich Mean Time)
+------------------------------------------------------
+
+Modified files:
+* pom.xml
+* src/main/java/mena/gov/bf/service/AvenantService.java
+* src/main/java/mena/gov/bf/service/ContentieuxService.java
+* src/main/java/mena/gov/bf/service/LiquidationService.java
+* src/main/java/mena/gov/bf/service/StatutExecutionService.java
+* src/main/java/mena/gov/bf/service/TypeAvenantService.java
+* src/main/java/mena/gov/bf/service/dto/AvenantDTO.java
+* src/main/java/mena/gov/bf/web/rest/AvenantResource.java
+* src/main/java/mena/gov/bf/web/rest/ContentieuxResource.java
+* src/main/java/mena/gov/bf/web/rest/LiquidationResource.java
+* src/main/java/mena/gov/bf/web/rest/StatutExecutionResource.java
+
+
+Created files:
+* .autogit/autogit.json
+
+
+Deleted files:
+
+
+Renamed files:

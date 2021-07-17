@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="mena.gov.bf_microserviceexecution_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/sgimp"/>
+      <property name="javax.persistence.jdbc.user" value="sgimp"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="sgimp"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="DEFAULT_PU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>mena.gov.bf.domain.Liquidation</class>
+    <class>mena.gov.bf.domain.DecisionContentieux</class>
+    <class>mena.gov.bf.domain.LigneBudgetaireContrat</class>
+    <class>mena.gov.bf.domain.OrdreService</class>
+    <class>mena.gov.bf.domain.StatutExecution</class>
+    <class>mena.gov.bf.domain.Penalite</class>
+    <class>mena.gov.bf.domain.TypeAvenant</class>
+    <class>mena.gov.bf.domain.Engagement</class>
+    <class>mena.gov.bf.domain.Contrat</class>
+    <class>mena.gov.bf.domain.OrdreCommande</class>
+    <class>mena.gov.bf.domain.EtapeExecution</class>
+    <class>mena.gov.bf.domain.Contentieux</class>
+    <class>mena.gov.bf.domain.Avenant</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+</persistence>
